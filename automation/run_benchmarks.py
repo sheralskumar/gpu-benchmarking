@@ -6,17 +6,24 @@ from pathlib import Path
 import pyopencl as cl
 import matplotlib.pyplot as plt
 import pandas as pd
+import platform
 
 # Define path to the benchmark executable
 SCRIPT_DIR = Path(__file__).parent.parent
-BENCHMARK_EXECUTABLE = SCRIPT_DIR / "build" / "benchmark.exe"
 SAVE_DIR = SCRIPT_DIR / "automation" / "benchmark_results.csv"
+
+if platform.system() == "Windows":
+    BENCHMARK_EXECUTABLE = SCRIPT_DIR / "build" / "benchmark.exe"
+    if not BENCHMARK_EXECUTABLE.exists():
+        BENCHMARK_EXECUTABLE = SCRIPT_DIR / "build" / "Release" / "benchmark.exe"
+else:
+    BENCHMARK_EXECUTABLE = SCRIPT_DIR / "build" / "benchmark"
 
 
 # Automatically detect all GPU devices
 def get_gpu_devices():
     platforms = cl.get_platforms()
-    devices = [dev for p in platforms for dev in p.get_devices(device_type=cl.device_type.GPU)]
+    devices = [dev for p in platforms for dev in p.get_devices(device_type=cl.device_type.ALL)]
 
     for i, dev in enumerate(devices):
         print(f"{i}: {dev.name}")

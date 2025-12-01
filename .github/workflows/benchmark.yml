@@ -1,0 +1,46 @@
+name: Windows CPU OpenCL Benchmark
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+
+jobs:
+  benchmark:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    # ---- Install OpenCL CPU runtime and build tools ----
+    - name: Install OpenCL SDK and CMake
+      run: |
+        choco install opencl-sdk -y
+        choco install cmake --installargs 'ADD_CMAKE_TO_PATH=System' -y
+
+    - name: Install Python dependencies
+      run: |
+        pip install --upgrade pip
+        pip install pyopencl numpy pandas matplotlib
+
+    # ---- Configure and build the C++ project ----
+    - name: Configure project (CMake with MSVC)
+      run: |
+        cmake -S . -B build -G "Visual Studio 17 2022" -A x64
+
+    - name: Build Release
+      run: |
+        cmake --build build --config Release
+
+    # ---- Run your Python benchmark automation ----
+    - name: Run Benchmark Script
+      run: |
+        python automation/benchmark.py 0
+
+    # ---- Upload benchmark results ----
+    - name: Upload Results
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-cpu-opencl-results
+        path: automation/
