@@ -1,6 +1,6 @@
-# Simple GPU Benchmarking Project
+# Simple CPU/GPU Benchmarking Project
 
-A GPU benchmarking project using **OpenCL** and **C++** with **Python** automation.  
+A CPU/GPU benchmarking project using **OpenCL**, **OpenMP**, and **C++** with **Python** automation.  
 Demonstrates low-level GPU programming, kernel execution, and automation for performance testing.
 CI/CD test automation using GitHub actions for both **Windows** (build only) and **Linux** (build & execute).
 
@@ -9,6 +9,7 @@ CI/CD test automation using GitHub actions for both **Windows** (build only) and
 - **C++ compiler** supporting C++17 (MSVC, GCC, Clang)
 - **CMake** ≥ 3.10
 - **OpenCL SDK** (AMD, NVIDIA, Intel, or generic)
+- **OpenMP** runtime library installed (e.g., libomp-dev on Linux)
 - **Python** 3.x (for automation scripts)
 - **Windows** 11 OR **Linux**
 
