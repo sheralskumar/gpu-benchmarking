@@ -277,7 +277,7 @@ int main(int argc, char** argv) {
         // get number of devices on a platform p, similar to the way we got number of platforms
         // CL_DEVICE_TYPE_ALL specifies we want all types of devices (CPU, GPU, etc.)
         // CL_DEVICE_TYPE_GPU could be used to select only GPU devices
-        err = clGetDeviceIDs(p, CL_DEVICE_TYPE_GPU, 0, NULL, &dev_count);
+        err = clGetDeviceIDs(p, CL_DEVICE_TYPE_ALL, 0, NULL, &dev_count);
         if (err == CL_DEVICE_NOT_FOUND) { continue; } // skip platform with no devices
         CHECK(err);
 

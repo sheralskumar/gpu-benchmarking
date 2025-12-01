@@ -2,11 +2,9 @@ name: Windows CPU OpenCL Benchmark
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
 
 jobs:
-  benchmark:
+  windows-build:
     runs-on: windows-latest
 
     steps:
@@ -67,3 +65,39 @@ jobs:
       with:
         name: windows-cpu-opencl-build
         path: build/Release/
+  
+  linux-benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          sudo apt update
+          sudo apt-get install -y cmake build-essential ocl-icd-opencl-dev pocl-opencl-icd python3-pip
+          python3 -m pip install --upgrade pip
+          pip install pyopencl numpy pandas matplotlib
+
+      - name: Cache CMake build
+        uses: actions/cache@v3
+        with:
+          path: build
+          key: linux-cmake-${{ github.sha }}
+          restore-keys: |
+            linux-cmake-
+
+      - name: Configure project
+        run: cmake -S . -B build
+
+      - name: Build project
+        run: cmake --build build --config Release
+
+      - name: Run Benchmark
+        run: python3 automation/run_benchmarks.py 0
+
+      - name: Upload Benchmark Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-benchmark-results
+          path: automation/
