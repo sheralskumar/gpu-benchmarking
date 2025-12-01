@@ -2,6 +2,8 @@ name: Windows CPU OpenCL Benchmark
 
 on:
   workflow_dispatch:
+  push:
+    branches: [ main ]
 
 jobs:
   windows-build:
@@ -75,7 +77,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt-get install -y cmake build-essential ocl-icd-opencl-dev pocl-opencl-icd python3-pip
+          sudo apt-get install -y cmake build-essential ocl-icd-opencl-dev pocl-opencl-icd libomp-dev python3-pip
           python3 -m pip install --upgrade pip
           pip install pyopencl numpy pandas matplotlib
 
@@ -94,7 +96,7 @@ jobs:
         run: cmake --build build --config Release
 
       - name: Run Benchmark
-        run: python3 automation/run_benchmarks.py 0
+        run: python3 automation/run_benchmarks.py
 
       - name: Upload Benchmark Results
         uses: actions/upload-artifact@v4
