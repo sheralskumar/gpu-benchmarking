@@ -2,6 +2,7 @@
 
 A GPU benchmarking project using **OpenCL** and **C++** with **Python** automation.  
 Demonstrates low-level GPU programming, kernel execution, and automation for performance testing.
+CI/CD test automation using GitHub actions for both **Windows** (build only) and **Linux** (build & execute).
 
 ## Requirements
 
@@ -9,7 +10,7 @@ Demonstrates low-level GPU programming, kernel execution, and automation for per
 - **CMake** ≥ 3.10
 - **OpenCL SDK** (AMD, NVIDIA, Intel, or generic)
 - **Python** 3.x (for automation scripts)
-- **Windows** 11
+- **Windows** 11 OR **Linux**
 
 ## Building and Running
 
